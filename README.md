@@ -63,7 +63,7 @@ sheet_type options are 'sheet' for creating a native cloud sheet in SmartSheet o
 ### Update Existing Sheet
 You can update an existing sheet with changes from a DataFrame using:  
 
-`client.sheets.update(DF, provider_name, sheet_id=sheet_id)
+`client.sheets.update(DF, provider_name, sheet_id=sheet_id)`
 
 --
 ### Delete Existing Sheet
