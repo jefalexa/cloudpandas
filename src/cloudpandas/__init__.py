@@ -4,26 +4,7 @@ import requests
 import json
 
 base_url = 'https://www.cloudpandas.com/api/'
-
-class AdminClient:
-    def __init__(self, api_token):
-        self.api_token = api_token
-        self.base_url = base_url
-        self.redis = self.RedisDump(self.api_token, self.base_url)
     
-    class RedisDump:
-        def __init__(self, api_token, base_url):
-            self.api_token = api_token
-            self.base_url = base_url
-        def list(self):
-            url = '{}adminredisdump'.format(self.base_url)
-            headers = {'Authorization': 'Token {}'.format(self.api_token)}
-            providers = requests.get(url, headers=headers)
-            if providers.status_code == 200:
-                return(pd.read_json(providers.json()))
-            else:
-                raise SystemExit("Error {} - {}:  {}".format(providers.status_code, providers.reason, json.loads(providers.content)))
-            
 
 def df_to_json(df):
     for col in df.columns:
@@ -101,21 +82,7 @@ class Client:
             else:
                 raise RuntimeError("Error {} - {}:  {}".format(providers.status_code, providers.reason, json.loads(providers.content)))
                 
-        ##############
-        def keys(self, provider_id):
-            """TEMP For Testing Only
-            """
-            url = '{}keysget/{}'.format(self.base_url, provider_id)
-            headers = {'Authorization': 'Token {}'.format(self.api_token)}
-            providers = requests.get(url, headers=headers)
-            if providers.status_code == 200:
-                return(providers.json())
-            else:
-                raise RuntimeError("Error {} - {}:  {}".format(providers.status_code, providers.reason, json.loads(providers.content)))
-                
-        ##############
-    
-    
+
     class Sheets:
         def __init__(self, api_token, base_url):
             """

@@ -1,6 +1,6 @@
 # CloudPandas Client
 
-This module provides a client for working with the [CloudPandas](https://www.cloudpandas.com) API.  CloudPandas is a SaaS platform to streamline working with cloud based spreadsheets such as SmartSheet and Google Sheets using Python Pandas.  It allows users to read from and write to these cloud based spreadsheets as DataFrames.  
+This module provides a client for working with the [CloudPandas](https://www.cloudpandas.com) API.  CloudPandas is a SaaS platform to streamline working with cloud based spreadsheets such as SmartSheet and Google Sheets using Python Pandas.  It allows users to read from and write to, these cloud based spreadsheets as DataFrames.  
 
 See full documentation at https://www.cloudpandas.com/account/support/
 
