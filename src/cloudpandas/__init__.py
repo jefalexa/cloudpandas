@@ -78,7 +78,10 @@ class Client:
             headers = {'Authorization': 'Token {}'.format(self.api_token)}
             providers = requests.get(url, headers=headers)
             if providers.status_code == 200:
-                return(pd.DataFrame(providers.json()))
+                data_providers = pd.DataFrame(providers.json())
+                data_providers['id'] = data_providers['id'].astype('int')
+                data_providers['status'] = data_providers['status'].map({'m':'Maintenance','a':'Active','e':'Expired'})
+                return(data_providers)
             else:
                 raise RuntimeError("Error {} - {}:  {}".format(providers.status_code, providers.reason, json.loads(providers.content)))
                 
@@ -195,7 +198,7 @@ class Client:
             else:
                 raise RuntimeError("Error {} - {}:  {}".format(sheet.status_code, sheet.reason, json.loads(sheet.content)))
                 
-        def update(self, data, provider_id, sheet_id, sub_sheet='Sheet1'):
+        def update(self, data, provider_id, sheet_id, sub_sheet=0):
             """A Method to update a sheet/file
             
             Parameters
@@ -223,7 +226,7 @@ class Client:
             """
             url = '{}fileupdate/{}/{}/?sub_sheet={}'.format(self.base_url, provider_id, sheet_id, sub_sheet)
             headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
-            sheet = requests.post(url, headers=headers, data=df_to_json(data))
+            sheet = requests.post(url, headers=headers, data=df_to_json(data.fillna("")))
             if sheet.status_code == 200:
                 return(sheet.json())
             else:
@@ -264,7 +267,7 @@ class Client:
                 raise RuntimeError("folder_path cannot be set with sheet_type=sheet")
             url = '{}filecreate/{}/{}/?sub_sheet={}&sheet_type={}&folder_id={}'.format(self.base_url, provider_id, sheet_name, sub_sheet, sheet_type, folder_path)
             headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
-            sheet = requests.post(url, headers=headers, data=df_to_json(data))
+            sheet = requests.post(url, headers=headers, data=df_to_json(data.fillna("")))
             if sheet.status_code == 200:
                 return(sheet.json())
             else:

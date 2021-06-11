@@ -1,10 +1,10 @@
 Metadata-Version: 2.1
 Name: cloudpandas
-Version: 0.0.4
+Version: 0.1.0
 Summary: Client for www.cloudpandas.com API.
 Home-page: https://github.com/jefalexa/cloudpandas
 Author: Jeff Alexander
-Author-email: jefalexa@gmail.com
+Author-email: admin@cloudpandas.com
 License: UNKNOWN
 Project-URL: Bug Tracker, https://github.com/jefalexa/cloudpandas/issues
 Platform: UNKNOWN
@@ -17,7 +17,7 @@ License-File: LICENSE
 
 # CloudPandas Client
 
-This module provides a client for working with the [CloudPandas](https://www.cloudpandas.com) API.  CloudPandas is a SaaS platform to streamline working with cloud based spreadsheets such as SmartSheet and Google Sheets using Python Pandas.  It allows users to read from and write to these cloud based spreadsheets as DataFrames.  
+This module provides a client for working with the [CloudPandas](https://www.cloudpandas.com) API.  CloudPandas is a SaaS platform to streamline working with cloud based spreadsheets such as SmartSheet and Google Sheets using Python Pandas.  It allows users to read from and write to, these cloud based spreadsheets as DataFrames.  
 
 See full documentation at https://www.cloudpandas.com/account/support/
 
@@ -80,7 +80,7 @@ sheet_type options are 'sheet' for creating a native cloud sheet in SmartSheet o
 ### Update Existing Sheet
 You can update an existing sheet with changes from a DataFrame using:  
 
-`client.sheets.update(DF, provider_name, sheet_id=sheet_id)
+`client.sheets.update(DF, provider_name, sheet_id=sheet_id)`
 
 --
 ### Delete Existing Sheet
