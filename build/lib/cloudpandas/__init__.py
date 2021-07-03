@@ -100,7 +100,7 @@ class Client:
             self.base_url = base_url
             
         def status(self, job_id):
-            url = '{}testrq_getmyprocstatus/{}/'.format(self.base_url, job_id)
+            url = '{}getmyprocstatus/{}/'.format(self.base_url, job_id)
             headers = {'Authorization': 'Token {}'.format(self.api_token)}
             results = requests.get(url, headers=headers)
             return(results.json())
@@ -170,7 +170,10 @@ class Client:
                 while True:
                     procstatus = self.status(results['id'])
                     if procstatus['status'] == 'finished':
-                        return(pd.read_json(procstatus['result']))
+                        try:
+                            return(pd.read_json(procstatus['result']))
+                        except:
+                            return("Error loading data:  {}".format(procstatus))
                     elif procstatus['status'] == 'failed':
                         return(procstatus)
                     time.sleep(1)
@@ -253,7 +256,10 @@ class Client:
                 while True:
                     procstatus = self.status(results['id'])
                     if procstatus['status'] == 'finished':
-                        return(procstatus['result'])
+                        try:
+                            return(procstatus['result'])
+                        except:
+                            return("Error loading data:  {}".format(procstatus))
                     elif procstatus['status'] == 'failed':
                         return(procstatus)
                     time.sleep(1)
@@ -303,7 +309,10 @@ class Client:
                 while True:
                     procstatus = self.status(results['id'])
                     if procstatus['status'] == 'finished':
-                        return(procstatus['result'])
+                        try:
+                            return(procstatus['result'])
+                        except:
+                            return("Error loading data:  {}".format(procstatus))                    
                     elif procstatus['status'] == 'failed':
                         return(procstatus)
                     time.sleep(1)
