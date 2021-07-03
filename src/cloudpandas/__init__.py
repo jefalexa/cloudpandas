@@ -2,14 +2,14 @@ import pandas as pd
 import numpy as np
 import requests
 import json
-
-base_url = 'https://www.cloudpandas.com/api/'
+import time
     
 
 def df_to_json(df):
     for col in df.columns:
         if df[col].dtype == 'datetime64[ns]':
             df[col] = df[col].astype('str')
+    df.reset_index(drop=True, inplace=True)
     return(df.to_json())
 
 
@@ -34,7 +34,7 @@ class Client:
     Sheets
         A Class used to interact with sheets/files contained in your Data Providers
     """
-    def __init__(self, api_token):
+    def __init__(self, api_token, base_url='https://www.cloudpandas.com/api/'):
         """
         Parameters
         ----------
@@ -99,6 +99,13 @@ class Client:
             self.api_token = api_token
             self.base_url = base_url
             
+        def status(self, job_id):
+            url = '{}testrq_getmyprocstatus/{}/'.format(self.base_url, job_id)
+            headers = {'Authorization': 'Token {}'.format(self.api_token)}
+            results = requests.get(url, headers=headers)
+            return(results.json())
+            
+            
         def list(self, provider_id):
             """A Method to list the sheets/files of a given Data Provider
             
@@ -156,7 +163,14 @@ class Client:
             headers = {'Authorization': 'Token {}'.format(self.api_token)}
             sheet = requests.get(url, headers=headers)
             if sheet.status_code == 200:
-                return(pd.read_json(sheet.json()))
+                results = sheet.json()
+                while True:
+                    procstatus = self.status(results['id'])
+                    if procstatus['status'] == 'finished':
+                        return(pd.read_json(procstatus['result']))
+                    elif procstatus['status'] == 'failed':
+                        return(procstatus)
+                    time.sleep(1)
             else:
                 raise RuntimeError("Error {} - {}:  {}".format(sheet.status_code, sheet.reason, json.loads(sheet.content)))
                 
@@ -228,7 +242,14 @@ class Client:
             headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
             sheet = requests.post(url, headers=headers, data=df_to_json(data.fillna("")))
             if sheet.status_code == 200:
-                return(sheet.json())
+                results = sheet.json()
+                while True:
+                    procstatus = self.status(results['id'])
+                    if procstatus['status'] == 'finished':
+                        return(procstatus['result'])
+                    elif procstatus['status'] == 'failed':
+                        return(procstatus)
+                    time.sleep(1)
             else:
                 raise RuntimeError("Error {} - {}:  {}".format(sheet.status_code, sheet.reason, json.loads(sheet.content)))
             
@@ -269,7 +290,14 @@ class Client:
             headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
             sheet = requests.post(url, headers=headers, data=df_to_json(data.fillna("")))
             if sheet.status_code == 200:
-                return(sheet.json())
+                results = sheet.json()
+                while True:
+                    procstatus = self.status(results['id'])
+                    if procstatus['status'] == 'finished':
+                        return(procstatus['result'])
+                    elif procstatus['status'] == 'failed':
+                        return(procstatus)
+                    time.sleep(1)
             else:
                 raise RuntimeError("Error {} - {}:  {}".format(sheet.status_code, sheet.reason, json.loads(sheet.content)))
                 
