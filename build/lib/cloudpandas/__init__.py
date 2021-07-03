@@ -159,9 +159,12 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
-            url = '{}fileget/{}/{}/?sub_sheet={}&skip_rows={}'.format(self.base_url, provider_id, sheet_id, sub_sheet, skip_rows)
-            headers = {'Authorization': 'Token {}'.format(self.api_token)}
-            sheet = requests.get(url, headers=headers)
+            url = '{}fileget/'.format(self.base_url)
+            data = {'provider_id':provider_id, 'sheet_name':sheet_id, 'sub_sheet':sub_sheet, 'skip_rows':skip_rows}
+            data = json.dumps(data)
+            headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
+            sheet = requests.post(url, headers=headers, data=data)
+            
             if sheet.status_code == 200:
                 results = sheet.json()
                 while True:
@@ -204,9 +207,11 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
-            url = '{}fileinfo/{}/{}'.format(self.base_url, provider_id, sheet_id)
-            headers = {'Authorization': 'Token {}'.format(self.api_token)}
-            sheet = requests.get(url, headers=headers)
+            url = '{}fileinfo/'.format(self.base_url)
+            data = {'provider_id':provider_id, 'sheet_name':sheet_id}
+            data = json.dumps(data)
+            headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
+            sheet = requests.post(url, headers=headers, data=data)
             if sheet.status_code == 200:
                 return(sheet.json())
             else:
@@ -238,9 +243,11 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
-            url = '{}fileupdate/{}/{}/?sub_sheet={}'.format(self.base_url, provider_id, sheet_id, sub_sheet)
+            url = '{}fileupdate/'.format(self.base_url)
+            data = {'provider_id':provider_id, 'sheet_name':sheet_id, 'sub_sheet':sub_sheet, 'data':df_to_json(data.fillna(""))}
+            data = json.dumps(data)
             headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
-            sheet = requests.post(url, headers=headers, data=df_to_json(data.fillna("")))
+            sheet = requests.post(url, headers=headers, data=data)
             if sheet.status_code == 200:
                 results = sheet.json()
                 while True:
@@ -286,9 +293,11 @@ class Client:
             """
             if ((sheet_type.lower() == 'sheet') & (folder_path != '0')):
                 raise RuntimeError("folder_path cannot be set with sheet_type=sheet")
-            url = '{}filecreate/{}/{}/?sub_sheet={}&sheet_type={}&folder_id={}'.format(self.base_url, provider_id, sheet_name, sub_sheet, sheet_type, folder_path)
+            url = '{}filecreate/'.format(self.base_url)
+            data = {'provider_id':provider_id, 'sheet_name':sheet_name, 'sub_sheet':sub_sheet, 'sheet_type':sheet_type, 'folder_path':folder_path, 'data':df_to_json(data.fillna(""))}
+            data = json.dumps(data)
             headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
-            sheet = requests.post(url, headers=headers, data=df_to_json(data.fillna("")))
+            sheet = requests.post(url, headers=headers, data=data)
             if sheet.status_code == 200:
                 results = sheet.json()
                 while True:
@@ -322,9 +331,11 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
-            url = '{}filedelete/{}/{}'.format(self.base_url, provider_id, sheet_id)
-            headers = {'Authorization': 'Token {}'.format(self.api_token)}
-            sheet = requests.get(url, headers=headers)
+            url = '{}filedelete/'.format(self.base_url)
+            data = {'provider_id':provider_id, 'sheet_name':sheet_id}
+            data = json.dumps(data)
+            headers = {'Authorization': 'Token {}'.format(self.api_token), 'Content-Type':'application/json'}
+            sheet = requests.post(url, headers=headers, data=data)
             if sheet.status_code == 200:
                 return(sheet.json())
             else:
