@@ -125,6 +125,7 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
+            provider_id = str(provider_id)
             url = '{}filelist/{}'.format(self.base_url, provider_id)
             headers = {'Authorization': 'Token {}'.format(self.api_token)}
             sheet = requests.get(url, headers=headers)
@@ -159,6 +160,8 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
+            provider_id = str(provider_id)
+            sheet_id = str(sheet_id)
             url = '{}fileget/'.format(self.base_url)
             data = {'provider_id':provider_id, 'sheet_name':sheet_id, 'sub_sheet':sub_sheet, 'skip_rows':skip_rows}
             data = json.dumps(data)
@@ -210,6 +213,8 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
+            provider_id = str(provider_id)
+            sheet_id = str(sheet_id)
             url = '{}fileinfo/'.format(self.base_url)
             data = {'provider_id':provider_id, 'sheet_name':sheet_id}
             data = json.dumps(data)
@@ -246,6 +251,8 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
+            provider_id = str(provider_id)
+            sheet_id = str(sheet_id)
             url = '{}fileupdate/'.format(self.base_url)
             data = {'provider_id':provider_id, 'sheet_name':sheet_id, 'sub_sheet':sub_sheet, 'data':df_to_json(data.fillna(""))}
             data = json.dumps(data)
@@ -297,6 +304,8 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
+            provider_id = str(provider_id)
+            sheet_name = str(sheet_name)
             if ((sheet_type.lower() == 'sheet') & (folder_path != '0')):
                 raise RuntimeError("folder_path cannot be set with sheet_type=sheet")
             url = '{}filecreate/'.format(self.base_url)
@@ -340,6 +349,8 @@ class Client:
             RuntimeError
                 If the API returns anything other than Status 200
             """
+            provider_id = str(provider_id)
+            sheet_id = str(sheet_id)
             url = '{}filedelete/'.format(self.base_url)
             data = {'provider_id':provider_id, 'sheet_name':sheet_id}
             data = json.dumps(data)
